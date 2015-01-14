@@ -152,11 +152,33 @@ Satoshi.testMap = {
   }]
 };
 
+// Adds coins to an existing map
+Satoshi.addCoins = function(map, x, y, w, h, d) {
+  w = w || 1;
+  h = h || 1;
+  d = d || 1;
+  map.areas[0].creation.push({
+    "macro": "Fill",
+    "thing": "Coin",
+    "x": x,
+    "y": y,
+    "xnum": w*d,
+    "ynum": h*d,
+    "xwidth": 8/d,
+    "yheight": 16/d
+  });
+};
+
 // Adds a new map
 Satoshi.addMap = function(map) {
   console.log("Adding map: " + map.name);
   FSM.prototype.settings.maps.library[map.name] = map;
 };
+
+// Add coins
+Satoshi.addCoins(Satoshi.testMap, 10, 10, 2, 3);
+Satoshi.addCoins(Satoshi.testMap, 50, 10, 2, 3, 1.5);
+Satoshi.addCoins(Satoshi.testMap, 100, 10, 2, 3, 2);
 
 // Add new maps
 Satoshi.addMap(Satoshi.testMap);
