@@ -52,7 +52,7 @@ Satoshi.getValue = function(tx) {
 // Builds a map for given block
 Satoshi.buildMap = function(block) {
   var name = "block-" + block.block_no;
-  var defaults = Satoshi.testMap;
+  var defaults = Satoshi.classicMaps[(block.block_no - 1) % 31];
   var config = {
     name: name
   };
@@ -67,7 +67,7 @@ Satoshi.buildMap = function(block) {
     Satoshi.addCoins(map, x, y, w, h, d);
   }
   console.log("Building map: " + name);
-  console.log("Map : ", map);
+  console.log("Map: ", map);
   return map;
 };
 
