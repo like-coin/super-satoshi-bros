@@ -75,7 +75,31 @@ Satoshi.buildMap = function(block) {
 Satoshi.getBlock = function(id, callback) {
   var url = "https://chain.so/api/v2/block/BTC/" + id;
   $.get(url, function(response) {
+    console.log("Got block " + id + ": ", block);
     var block = response.data;
     callback(block);
   });
 };
+
+// Loads maps for block ids
+Satoshi.loadMaps = function(blockIDs, callback) {
+  var idCount = blockIDs.length;
+  var mapCount = 0;
+
+  // Get the blocks
+  $(blockIDs).each(function() {
+    var id = this;
+
+    // Create each map
+    Satoshi.getBlock(id, function(block) {
+      var map = Satoshi.buildMap(block);
+      Satoshi.addMap(map);
+      mapCount++;
+
+      // Run callback when maps are loaded
+      if (mapCount == idCount) {
+        callback();
+      }
+    });
+  });
+}
