@@ -1,6 +1,7 @@
 
 // Default to a recent block
 var defaultBlockID = 339000 - Math.round(10000 * Math.random());
+var defaultMap = "block-" + defaultBlockID;
 
 // Number of levels
 var levelCount = 12;
@@ -13,13 +14,14 @@ for (var i = 0; i < levelCount; i++) {
 
 // Prepares a new game
 var setupGame = function() {
-    Satoshi.setDefaultMap("block-" + defaultBlockID);
-    Satoshi.loadMaps(blockIDs, startGame);
+  Satoshi.setDefaultMap(defaultMap);
+  Satoshi.loadMaps(blockIDs, startGame);
 };
 
 // Starts the game
 var startGame = function() {
-    Satoshi.loadMario();
+  Satoshi.addTitleScreen(Satoshi.library[defaultMap]);
+  Satoshi.loadMario();
 }
 
 // Let's do this!

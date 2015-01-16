@@ -88,6 +88,13 @@ Satoshi.setupArea = function(area, block) {
   }
 };
 
+// Adds the title screen to a map
+Satoshi.addTitleScreen = function(map) {
+  var area = map.areas[0];
+  var items = area.creation;
+  area.creation = [].concat(Satoshi.titleScreen, items);
+};
+
 // Builds a map for given block
 Satoshi.buildMap = function(block) {
   var name = "block-" + block.block_no;
