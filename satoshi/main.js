@@ -1,6 +1,6 @@
 
 // Default to a recent block
-var defaultBlockID = 330000 + Math.round(100 * Math.random());
+var defaultBlockID = 339000 - Math.round(10000 * Math.random());
 
 // Get the block
 Satoshi.getBlock(defaultBlockID, function(block) {
