@@ -11,23 +11,6 @@ for (var key in Satoshi.library) {
   Satoshi.classicMaps.push(Satoshi.library[key]);
 }
 
-// Adds coins to an existing map
-Satoshi.addCoins = function(map, x, y, w, h, d) {
-  w = w || 1;
-  h = h || 1;
-  d = d || 1;
-  map.areas[0].creation.push({
-    "macro": "Fill",
-    "thing": "Coin",
-    "x": x,
-    "y": y,
-    "xnum": w*d,
-    "ynum": h*d,
-    "xwidth": 8/d,
-    "yheight": 16/d
-  });
-};
-
 // Adds a new map
 Satoshi.addMap = function(map) {
   console.log("Adding map: " + map.name);
@@ -49,6 +32,48 @@ Satoshi.getValue = function(tx) {
   return value;
 };
 
+// Adds coins to a map area
+Satoshi.addCoins = function(area, x, y, w, h, d) {
+  w = w || 1;
+  h = h || 1;
+  d = d || 1;
+  area.creation.push({
+    "macro": "Fill",
+    "thing": "Coin",
+    "x": x,
+    "y": y,
+    "xnum": w*d,
+    "ynum": h*d,
+    "xwidth": 8/d,
+    "yheight": 16/d
+  });
+};
+
+// Prepares an existing map area
+Satoshi.setupArea = function(area, block) {
+
+  // Add coins for block
+  for (var i = 0; i < block.txs.length && i < 1000; i++) {
+    var tx = block.txs[i];
+    var d = Math.log(Satoshi.getValue(tx));
+    var x = i * 10;
+    var y = Math.min(10, tx.inputs.length) * 4 + 6;
+    var w = Math.min(10, tx.outputs.length);
+    var h = Math.min(10, d)
+    Satoshi.addCoins(area, x, y, w, h, d);
+  }
+
+  // Set next map
+  var items = area.creation;
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+    if (item.macro == "EndInsideCastle" ||
+        item.macro == "EndOutsideCastle") {
+      item.transport = { "map": "block-" + (block.block_no - 1) };
+    }
+  }
+};
+
 // Builds a map for given block
 Satoshi.buildMap = function(block) {
   var name = "block-" + block.block_no;
@@ -57,16 +82,12 @@ Satoshi.buildMap = function(block) {
     name: name
   };
   var map = $.extend({}, defaults, config);
-  for (var i = 0; i < block.txs.length && i < 1000; i++) {
-    var tx = block.txs[i];
-    var d = Math.log(Satoshi.getValue(tx));
-    var x = i * 10;
-    var y = Math.min(10, tx.inputs.length) * 4 + 6;
-    var w = Math.min(10, tx.outputs.length);
-    var h = Math.min(10, d)
-    Satoshi.addCoins(map, x, y, w, h, d);
+
+  // Setup map areas
+  for (var i in map.areas) {
+    Satoshi.setupArea(map.areas[i], block);
   }
-  console.log("Building map: " + name);
+
   console.log("Map: ", map);
   return map;
 };
