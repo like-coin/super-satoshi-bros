@@ -49,10 +49,13 @@ Satoshi.addCoins = function(area, x, y, w, h, d) {
   });
 };
 
-// Prepares an existing map area
-Satoshi.setupArea = function(area, block) {
+// Removes all coins from a map area
+Satoshi.removeAllCoins = function(area) {
+  _.remove(area.creation, {"thing": "Coin"});
+};
 
-  // Add coins for block
+// Adds coins to map area for a given block
+Satoshi.addCoinsForBlock = function(area, block) {
   for (var i = 0; i < block.txs.length && i < 1000; i++) {
     var tx = block.txs[i];
     var d = Math.log(Satoshi.getValue(tx));
@@ -62,11 +65,22 @@ Satoshi.setupArea = function(area, block) {
     var h = Math.min(10, d)
     Satoshi.addCoins(area, x, y, w, h, d);
   }
+};
+
+// Prepares an existing map area
+Satoshi.setupArea = function(area, block) {
+  var items = area.creation;
+
+  // Replace coins
+  if (items.length > 20) {
+    Satoshi.removeAllCoins(area);
+    Satoshi.addCoinsForBlock(area, block);
+  }
 
   // Set next map
-  var items = area.creation;
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
+
     if (item.macro == "EndInsideCastle" ||
         item.macro == "EndOutsideCastle") {
       item.transport = { "map": "block-" + (block.block_no - 1) };
@@ -123,4 +137,4 @@ Satoshi.loadMaps = function(blockIDs, callback) {
       }
     });
   });
-}
+};
