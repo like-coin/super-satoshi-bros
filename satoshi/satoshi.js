@@ -56,10 +56,10 @@ Satoshi.removeAllCoins = function(area) {
 
 // Adds coins to map area for a given block
 Satoshi.addCoinsForBlock = function(area, block) {
-  for (var i = 0; i < block.txs.length && i < 1000; i++) {
+  for (var i = 0; i < block.txs.length && i < 100; i++) {
     var tx = block.txs[i];
     var d = Math.log(Satoshi.getValue(tx));
-    var x = i * 10;
+    var x = i * 100;
     var y = Math.min(10, tx.inputs.length) * 4 + 6;
     var w = Math.min(10, tx.outputs.length);
     var h = Math.min(10, d)

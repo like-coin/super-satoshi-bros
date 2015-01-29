@@ -4,7 +4,7 @@ var defaultBlockID = 339000 - Math.round(10000 * Math.random());
 var defaultMap = "block-" + defaultBlockID;
 
 // Number of levels
-var levelCount = 12;
+var levelCount = 4;
 
 // List of block ids
 var blockIDs = [];
