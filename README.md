@@ -7,7 +7,7 @@
 
 ## Details
 
-Super Satoshi Bros is a version of the classic NES game which replaces all the original coins with new coins representing transaction outputs of the Bitcoin blockchain, in a way that nearly any transaction can be represented. The game begins in a random world corresponding to a recent block, one of the last 10,000. From here, the game continues in reverse direction, towards the original genesis block.
+This version replaces all the coins of the original game with new coins representing transaction outputs of the Bitcoin blockchain, in a way that nearly any transaction can be represented. The game begins in a random world corresponding to a recent block, one of the last 10,000. From here, the game continues in reverse direction, towards the original genesis block.
 
 For example, the map for each block is given by:
 
